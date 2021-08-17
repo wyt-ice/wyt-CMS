@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<!-- jQuery -->
+<script src="  js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="  css/external/dataTables.bootstrap.css"/>
+<script src="  js/external/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="  js/external/dataTables.bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<!--界面库 bootstrap-->
+<link rel="stylesheet" type="text/css" href="  css/external/bootstrap.min.css"/>
+<script src="  js/external/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="  css/page.css"/>
+<script type="text/javascript">
+    window.onload = getOrder;
+
+    function getOrder() {
+        //ajax();
+        //ajax_query();
+        refreshData();
+    }
+</script>
+<body>
+<div>
+    入库情况：
+    <select id="selectState">
+        <option value="">请选择</option>
+        <option value="入库并签收">入库并签收</option>
+        <option value="正在路上">正在路上</option>
+    </select>
+    <button type="button" class="btn btn-primary" onclick="refreshData()">查询</button>
+</div>
+
+<div>
+<!--    <button type="button" class="btn btn-primary" onclick="addDataDialog()">新增</button>-->
+    <button type="button" class="btn btn-primary" onclick="orderDownload()">下载</button>
+</div>
+<br>
+
+<table id="orderList" class="table table-striped">
+    <thead>
+    <tr>
+        <th>入库ID</th>
+        <th>产品名称</th>
+        <th>客户姓名</th>
+        <th>入库数量/斤</th>
+        <th>应收款</th>
+        <th>实收款</th>
+        <th>仓库地址</th>
+        <th>入库情况</th>
+        <th></th>
+    </tr>
+    </thead>
+</table>
+<!-- 新增对话框 -->
+<div class="modal" id="addOrderDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">新增入库信息</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>产品名称</label>
+                        <input type="text" class="form-control" name="proName" placeholder="产品名称">
+                    </div>
+                    <div class="form-group">
+                        <label>客户姓名</label>
+                        <input type="text" class="form-control" name="custName" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>订单量</label>
+                        <input type="text" class="form-control" name="counts" placeholder="入库数量">
+                    </div>
+                    <div class="form-group">
+                        <label>应收款</label>
+                        <input type="text" class="form-control" name="accountRecei" placeholder="应收款">
+                    </div>
+                    <div class="form-group">
+                        <label>实收款</label>
+                        <input type="text" class="form-control" name="prepayment" placeholder="实收款">
+                    </div>
+                    <div class="form-group">
+                        <label>地址</label>
+                        <input type="text" class="form-control" name="address" placeholder="仓库地址">
+                    </div>
+                    <div class="form-group">
+                        <label>入库情况</label>
+                        <br>
+                        <select name="orderState">
+                            <option value="">请选择</option>
+                            <option value="入库并签收">入库并签收</option>
+                            <option value="正在路上">正在路上</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group addDataPlane">
+                        <button class="btn btn-default navbar-right" onclick="addData()">确定</button>
+                        <button class="btn btn-default " data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modifyOrderDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">修改入库信息</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>产品名称</label>
+                        <input type="text" class="form-control" name="proName1" placeholder="产品名称">
+                    </div>
+                    <div class="form-group">
+                        <label>客户姓名</label>
+                        <input type="text" class="form-control" name="custName1" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>订单量</label>
+                        <input type="text" class="form-control" name="counts1" placeholder="订单量">
+                    </div>
+                    <div class="form-group">
+                        <label>应收款</label>
+                        <input type="text" class="form-control" name="accountRecei1" placeholder="应收款">
+                    </div>
+                    <div class="form-group">
+                        <label>实收款</label>
+                        <input type="text" class="form-control" name="prepayment1" placeholder="实收款">
+                    </div>
+                    <div class="form-group">
+                        <label>地址</label>
+                        <input type="text" class="form-control" name="address1" placeholder="地址">
+                    </div>
+                    <div class="form-group">
+                        <label>订单状态</label>
+                        <br>
+                        <select name="orderState1">
+                            <option>请选择</option>
+                            <option value="完成订单">完成订单</option>
+                            <option value="已发货">已发货</option>
+                            <option value="售罄">售罄</option>
+                        </select>
+                    </div>
+                    <div class="form-group addDataPlane">
+                        <button class="btn btn-default navbar-right" onclick="modifyData()">确定</button>
+                        <button class="btn btn-default " data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="editDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">修改内容</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <P>这是内容部分</P>
+                </div>
+                <!-- 页脚 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary myclose" data-dismiss="modal">关闭</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 分类删除模态框 -->
+<div class="modal small fade" id="delOrderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">删除确认</h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="text-align:center;">
+                    <i class="fa fa-warning modal-fa" style="color:red;"></i> 您确认要删除该订单信息吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="delButton" data-account="" data-complete-text="正在删除...">删除</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </div>
+    </div>
+    　　
+</div>
+</body>
+
+
+<script type="text/javascript" src="js/order.js"></script>
+<script type="text/javascript" src="js/download.js"></script>
+
+
+</html>

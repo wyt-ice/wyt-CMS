@@ -1,0 +1,11 @@
+2021-04-29 16:22:22.416 [ main ] - [ INFO  ] [ com.jincheng.customer.CustomerApplication : 55 ] - Starting CustomerApplication using Java 14.0.2 on DESKTOP-EI5J427 with PID 408 (D:\专业课\customer\target\classes started by admin in D:\专业课\customer)
+2021-04-29 16:22:22.419 [ main ] - [ INFO  ] [ com.jincheng.customer.CustomerApplication : 662 ] - No active profile set, falling back to default profiles: default
+2021-04-29 16:22:23.659 [ main ] - [ INFO  ] [ org.apache.coyote.http11.Http11NioProtocol : 173 ] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-04-29 16:22:23.660 [ main ] - [ INFO  ] [ org.apache.catalina.core.StandardService : 173 ] - Starting service [Tomcat]
+2021-04-29 16:22:23.661 [ main ] - [ INFO  ] [ org.apache.catalina.core.StandardEngine : 173 ] - Starting Servlet engine: [Apache Tomcat/9.0.44]
+2021-04-29 16:22:23.764 [ main ] - [ INFO  ] [ o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] : 173 ] - Initializing Spring embedded WebApplicationContext
+2021-04-29 16:22:24.563 [ main ] - [ INFO  ] [ org.apache.coyote.http11.Http11NioProtocol : 173 ] - Starting ProtocolHandler ["http-nio-8080"]
+2021-04-29 16:22:24.625 [ main ] - [ INFO  ] [ com.jincheng.customer.CustomerApplication : 61 ] - Started CustomerApplication in 2.55 seconds (JVM running for 3.396)
+2021-04-29 16:22:25.632 [ http-nio-8080-exec-2 ] - [ INFO  ] [ o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] : 173 ] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-04-29 16:22:28.836 [ http-nio-8080-exec-4 ] - [ INFO  ] [ com.jincheng.customer.bean.AspectClass : 25 ] - 调用方法名：getIndex
+2021-04-29 16:26:08.496 [ http-nio-8080-exec-8 ] - [ INFO  ] [ com.jincheng.customer.bean.AspectClass : 25 ] - 调用方法名：getverCode

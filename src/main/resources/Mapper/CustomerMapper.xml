@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jincheng.customer.dao.CustomerMapper">
+    <!--    <select id="queryCustomer" resultType="com.jincheng.customer.bean.Customer">-->
+    <!--         select cust_id,cust_name,b.dict_item_name as cust_industry,c.dict_item_name as  cust_level ,cust_mobile,cust_createtime from customer-->
+    <!--LEFT JOIN (select dict_id,dict_item_name from base_dict where dict_type_code='001') b on customer.cust_industry=b.dict_id-->
+    <!--LEFT JOIN (select dict_id,dict_item_name from base_dict where dict_type_code='002') c on customer.cust_level=c.dict_id-->
+    <!--    </select>-->
+    <!--    <select id="fuzzyQuery" resultType="com.jincheng.customer.bean.Customer">-->
+    <!--        <bind name="index" value="'%'+index+'%'"/>-->
+    <!--        SELECT * FROM (SELECT cust_id,cust_name,b.dict_item_name AS cust_industry,c.dict_item_name AS  cust_level ,cust_mobile,cust_createtime FROM customer-->
+    <!--LEFT JOIN (SELECT dict_id,dict_item_name FROM base_dict WHERE dict_type_code='001') b ON customer.cust_industry=b.dict_id-->
+    <!--LEFT JOIN (SELECT dict_id,dict_item_name FROM base_dict WHERE dict_type_code='002') c ON customer.cust_level=c.dict_id ) s-->
+    <!--WHERE CONCAT(`cust_name`,`cust_industry`,`cust_level`,`cust_mobile`) like  #{index}-->
+    <!--    </select>-->
+    <select id="queryCustomer" resultType="Customer">
+        SELECT cust_id,cust_name,b.dict_item_name cust_industry, b1.dict_item_name cust_level, cust_mobile,
+        cust_createtime from customer
+        LEFT JOIN
+        (SELECT dict_id,dict_item_name from base_dict where base_dict.dict_type_code='001') b
+        on customer.cust_industry=b.dict_id
+        LEFT JOIN
+        (SELECT dict_id,dict_item_name from base_dict where base_dict.dict_type_code='002') b1
+        on b1.dict_id=customer.cust_level
+        <where>
+            <if test="customer.custId != null and customer.custId != 0">
+                cust_id = #{customer.custId}
+            </if>
+            <if test="customer.custName != null and customer.custName != ''">
+                and cust_name like concat('%',#{customer.custName},'%')
+            </if>
+            <if test="customer.custIndustry != null and customer.custIndustry != ''">
+                and cust_industry = #{customer.custIndustry}
+            </if>
+            <if test="customer.custLevel != null and customer.custLevel != ''">
+                and cust_level = #{customer.custLevel}
+            </if>
+            <if test="customer.custMobile != null and customer.custMobile != ''">
+                and cust_mobile = #{customer.custMobile}
+            </if>
+        </where>
+        limit #{start},#{length}
+    </select>
+    <select id="queryTotalCount" resultType="int">
+        SELECT count(*) from customer
+        <where>
+            <if test="custId != null and custId != 0" >
+                cust_id = #{custId}
+            </if>
+            <if test="custName != null and custName != ''" >
+                and cust_name like concat("%",#{custName},"%")
+            </if>
+            <if test="custIndustry != null and custIndustry != ''" >
+                and cust_industry = #{custIndustry}
+            </if>
+            <if test="custLevel != null and custLevel != ''" >
+                and cust_level = #{custLevel}
+            </if>
+            <if test="custMobile != null and custMobile != ''" >
+                and cust_mobile = #{custMobile}
+            </if>
+        </where>
+    </select>
+    <insert id="addCustomer">
+        insert into customer values(null ,#{custName},#{custIndustry},#{custLevel},#{custMobile},#{custCreateTime})
+    </insert>
+    <update id="modifyCustomer" parameterType="com.jincheng.customer.bean.Customer">
+        update customer
+        <set>
+            <if test="custName!= null and custName !=''">
+                cust_name=#{custName},
+            </if>
+            <if test="custIndustry!=null and custIndustry != ''">
+                cust_industry=#{custIndustry},
+            </if>
+            <if test="custMobile!=null and custMobile !=''">
+                cust_mobile=#{custMobile},
+            </if>
+            <if test="custLevel!= null and custLevel !=''">
+                cust_level=#{custLevel},
+            </if>
+            cust_createtime=STR_TO_DATE(#{custCreateTime},'%Y-%m-%d %H:%i:%s')
+
+        </set>
+        where cust_id= #{custId}
+    </update>
+    <delete id="delCustomer" parameterType="Integer">
+        DELETE FROM customer WHERE cust_id= #{custId}
+    </delete>
+</mapper>

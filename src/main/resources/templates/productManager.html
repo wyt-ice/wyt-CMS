@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<!-- jQuery -->
+<script src="  js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="  css/external/dataTables.bootstrap.css"/>
+<script src="  js/external/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="  js/external/dataTables.bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<!--界面库 bootstrap-->
+<link rel="stylesheet" type="text/css" href="  css/external/bootstrap.min.css"/>
+<script src="  js/external/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="  css/page.css"/>
+<script type="text/javascript">
+    window.onload=getPro;
+    function getPro() {
+        refreshData();
+    }
+</script>
+<div>
+    产品ID：<input id="selectId" value=""/>
+    产品名称：<input id="selectName" value=""/>
+    产品类型：
+    <select id="selectProType">
+        <option value="">请选择</option>
+        <option value="水果">水果类</option>
+        <option value="肉禽">肉禽类</option>
+        <option value="蔬菜">蔬菜类</option>
+        <option value="其他">其他</option>
+    </select>
+
+    <button type="button" class="btn btn-primary" onclick="refreshData()">查询</button>
+</div>
+<body>
+<div>
+    <button type="button" class="btn btn-primary" onclick="addDataDialog()">新增</button>
+</div>
+<br>
+
+<table id="productList" class="table table-striped">
+    <thead>
+    <tr>
+        <th>产品ID</th>
+        <th>名称</th>
+        <th>种类</th>
+        <th>样图</th>
+        <th>库存/斤</th>
+        <th>价格/(元/斤)</th>
+        <th></th>
+    </tr>
+    </thead>
+</table>
+<!-- 新增对话框 -->
+<div class="modal" id="addProductDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">新增产品信息</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>产品名称</label>
+                        <input type="text" class="form-control" name="proName" placeholder="产品名称">
+                    </div>
+                    <div class="form-group">
+                        <label>产品种类</label>
+                        <br>
+                        <select name="proType">
+                            <option>请选择</option>
+                            <option value="水果">水果类</option>
+                            <option value="肉禽">肉禽类</option>
+                            <option value="蔬菜">蔬菜类</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>产品样图</label>
+                        <div class="san3">
+                            <input type="file" name="file" id="file" onchange="showImg(this)"><!--选择图片-->
+                            <img id="product">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>产品库存</label>
+                        <input type="text" class="form-control" name="proCount" placeholder="产品库存/斤">
+                    </div>
+                    <div class="form-group">
+                        <label>产品价格</label>
+                        <input type="text" class="form-control" name="price" placeholder="产品价格/(元/斤)">
+                    </div>
+                    <div class="form-group addDataPlane">
+                        <button class="btn btn-default navbar-right" onclick="addData()">确定</button>
+                        <button class="btn btn-default " data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modifyProductDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">修改产品信息</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>产品名称</label>
+                        <input type="text" class="form-control" name="proName1" placeholder="产品名称">
+                    </div>
+                    <div class="form-group">
+                        <label>产品种类</label>
+                        <br>
+                        <select name="proType1">
+                            <option>请选择</option>
+                            <option value="水果">水果类</option>
+                            <option value="肉禽">肉禽类</option>
+                            <option value="蔬菜">蔬菜类</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" name="file" id="file1" onchange="showImg1(this)"><!--选择图片-->
+                        <img id="product1">
+                    </div>
+                    <div class="form-group">
+                        <label>产品库存</label>
+                        <input type="text" class="form-control" name="proCount1" placeholder="产品库存/斤">
+                    </div>
+                    <div class="form-group">
+                        <label>产品价格</label>
+                        <input type="text" class="form-control" name="price1" placeholder="产品价格/(元/斤)">
+                    </div>
+                    <div class="form-group addDataPlane">
+                        <button class="btn btn-default navbar-right" onclick="modifyData()">确定</button>
+                        <button class="btn btn-default " data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="proImgDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">样图展示</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <img id="proImg" src="">
+                </div>
+                <!-- 页脚 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary myclose" data-dismiss="modal">关闭</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 分类删除模态框 -->
+<div class="modal small fade" id="delProductDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">删除确认</h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="text-align:center;">
+                    <i class="fa fa-warning modal-fa" style="color:red;"></i> 您确认要删除该产品信息吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="delButton" data-account="" data-complete-text="正在删除...">删除</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </div>
+    </div>
+    　　
+</div>
+</body>
+
+<script type="text/javascript" src="js/product.js"></script>
+
+
+
+</html>

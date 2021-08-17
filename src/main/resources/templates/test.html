@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单管理</title>
+</head>
+<script src="  js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<body>
+<div id="ajaxForm" >
+    <p>ajax文件上传</p>
+    <div class="san3">
+        <input type="file" name="file" id="file"/>
+        <span id="message"></span>
+        <input id="ajaxSubmit" type="submit" value="上传" onclick="ajaxUpload()">
+    </div>
+</div>
+<div class="form-group">
+    <p>上传照片</p>
+    <div class="san3">
+        <input type="file" name="file" id="file1" onchange="showImg(this)" ><!--选择图片-->
+        <button onclick="getImg()">保存</button>
+    </div>
+    <div>
+        <img id="Img">
+    </div>
+</div>
+</body>
+<script>
+    function ajaxUpload(){
+        var formData=new FormData();
+        formData.append("file",$("#file")[0].files[0]);
+        //判断文件大小
+        if (formData.get("file").size>104857600) {
+            $("#message").text("上传的附件不能大于100M");
+            return false;
+        }
+
+        $.ajax({
+            type:'POST',
+            url:'/ajaxUpload',
+            data:formData,
+            processData:false,//告诉jQuery不要去处理发送的数据
+            contentType:false,
+            success:function(data){
+                if (data=="error") {
+                    $("#message").text("附件添加失败！");
+                }else{
+                    $("#message").text("附件已添加"+data.list);
+                }
+            },
+            error: function (e) {
+                console.log(formData.get("file").name)
+                console.log(e.status);
+                console.log(e.responseText);
+                alert("操作有误请联系管理员")
+            }
+        });
+    }
+    function showImg(cell) {
+        baseImg= window.URL.createObjectURL(cell.files[0]);
+        console.log(cell)
+        filename = cell.files[0].name
+        $("#Img").attr("src", baseImg);
+        console.log("baseImg:"+baseImg)
+    }
+    function image2Base64(img) {//转base64的方法
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        var dataURL = canvas.toDataURL("image/png");//规定图片是什么格式，image/格式
+        return dataURL;
+    }
+
+    function getImg(){
+        var img = new Image();
+        img.src=baseImg;
+        var base64 = image2Base64(img);
+        var fileName = filename
+        var a={
+            'base64String':base64,
+            'fileName':fileName
+        }
+
+        $.ajax({
+            type:'POST',
+            url:'/base64',
+            data:JSON.stringify(a),
+            contentType:'application/json;charset=UTF-8',
+            success:function(data){
+                console.log(a)
+            },
+            error: function (e) {
+                console.log(a)
+                console.log(e.status);
+                console.log(e.responseText);
+                alert("操作有误请联系管理员")
+            }
+        });
+
+    }
+</script>
+</html>

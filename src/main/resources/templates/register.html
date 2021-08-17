@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>用户注册</title>
+    <link type="text/css" rel="stylesheet" href="css/register.css">
+    <script src="  js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div>
+    <img class="tree" src="images/tree.jpg"/>
+    <form class="contact_form" action="/register" method="post" name="contact_form">
+        <ul>
+            <li class="usually">
+                <h2>用户注册</h2>
+            </li>
+            <li class="usually">
+                <span>昵称:</span>
+                <input type="text" id="username" name="username" required/>
+            </li>
+            <li class="usually">
+                <span>注册邮箱:</span>
+                <input type="email" name="email" placeholder="javin@example.com" required/>
+            </li>
+            <li class="usually">
+                <span>密码:</span>
+                <input type="password" name="password" required/>
+            </li>
+            <li class="usually">
+                <span>确认密码:</span>
+                <input type="password" name="repassword" required/>
+            </li>
+            <li class="usually">
+                <span>验证码</span>
+                <input name="usercode" required/>
+                <button type="button" onclick="getVerCode()">获取验证码</button>
+            </li>
+            <p th:text="${registerErr}"></p>
+            <li>
+                <button class="submit" type="submit">立即注册</button>
+            </li>
+        </ul>
+    </form>
+</div>
+<script>
+    function getVerCode() {
+        var email = $("input[name=email]")[0].value;
+        $.ajax({
+            // 请求方式
+            type: "get",
+            // 请求地址
+            url: "/getVerCode",
+            // 请求成功
+            contentType: 'charset=UTF-8',
+            data: "email=" + email,
+            success: function (result) {
+                alert("请登录邮箱查看验证码")
+            },
+            // 请求失败，包含具体的错误信息
+            error: function (e) {
+
+                alert("请联系管理员")
+            }
+        });
+    }
+</script>
+</body>
+</html>

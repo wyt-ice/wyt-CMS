@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jincheng.customer.dao.productMapper">
+    <select id="queryPro" resultType="Product">
+        select * from t_product
+        <where>
+        <if test="proId != null and proId != 0">
+            proId = #{proId}
+        </if>
+        <if test="proName != null and proName != ''">
+            and proName like concat('%',#{proName},'%')
+        </if>
+        <if test="proType != null and proType != ''">
+            and proType = #{proType}
+        </if>
+        </where>
+    </select>
+    <select id="queryProForOrder" resultType="Product">
+        select * from t_product where proName = #{proName}
+    </select>
+    <insert id="addProduct">
+        insert into t_product values(null ,#{proName},#{proType},#{proImg},#{proCount},#{price})
+    </insert>
+    <delete id="delProduct" parameterType="Integer">
+        DELETE FROM t_product WHERE proId= #{proId}
+    </delete>
+    <update id="modifyProduct" parameterType="com.jincheng.customer.bean.Product">
+        update t_product
+        <set>
+            <if test="proName!= null and proName !=''">
+                proName=#{proName},
+            </if>
+            <if test="proType!=null and proType != ''">
+                proType=#{proType},
+            </if>
+            <if test="proImg!=null and proImg !=''">
+                proImg=#{proImg},
+            </if>
+            <if test="proCount!= null and proCount !=''">
+                proCount=#{proCount},
+            </if>
+            <if test="price!= null and price !=''">
+                price = #{price}
+            </if>
+
+        </set>
+        where proId= #{proId}
+    </update>
+</mapper>

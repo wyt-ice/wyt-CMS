@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品</title>
+</head>
+<!-- jQuery -->
+<script src="  js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="  css/external/dataTables.bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="  css/proList.css"/>
+<script src="  js/external/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="  js/external/dataTables.bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<!--界面库 bootstrap-->
+<link rel="stylesheet" type="text/css" href="  css/external/bootstrap.min.css"/>
+<script src="  js/external/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<body>
+<ul id="proList">
+    <li>
+        <a href="orderAdd.html" onclick="getPrice(this)" proname='苹果' price=20>
+            <img  src="images/product/6a05e835-a699-47c9-b1aa-ffcca8b6a414.png">
+            <div class="productImg">
+                <span>苹果</span>
+            </div>
+            <div class="price">
+                <span>单价</span>
+                <span>￥</span>
+                <span>20/斤</span>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="orderAdd.html" onclick=getPrice(this) proname='香蕉' price=10>
+            <img src="images/product/aa784675-9134-4b97-b4f0-05988e7cfc76.png">
+            <div class="productImg">
+                <span>香蕉</span>
+            </div>
+            <div class="price">
+                <span>单价</span>
+                <span>￥</span>
+                <span>10/斤</span>
+            </div>
+        </a>
+    </li>
+</ul>
+
+</body>
+<script type="text/javascript" src="js/orderAdd.js"></script>
+</html>

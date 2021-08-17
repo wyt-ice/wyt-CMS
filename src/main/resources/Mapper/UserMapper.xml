@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jincheng.customer.dao.UserMapper">
+    <select id="queryUser" resultType="com.jincheng.customer.bean.User">
+        select * from tb_user where username = #{username}
+    </select>
+    <select id="isEmail" resultType="com.jincheng.customer.bean.User">
+        select * from tb_user where email = #{email}
+    </select>
+    <insert id="userRegister" parameterType="com.jincheng.customer.bean.User">
+        insert into tb_user(id,username,email,password) values(null,#{username},#{email},#{password})
+    </insert>
+</mapper>

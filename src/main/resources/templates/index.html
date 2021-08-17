@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>客户管理系统</title>
+</head>
+<!-- jQuery -->
+<script src=" js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href=" css/external/dataTables.bootstrap.css"/>
+<script src=" js/external/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+<script src=" js/external/dataTables.bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<!--界面库 bootstrap-->
+<link rel="stylesheet" type="text/css" href="css/external/bootstrap.min.css"/>
+<script src=" js/external/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+<!-- 其他js引用 -->
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/customer.js"></script>
+<script type="text/javascript" src="js/islogin.js"></script>
+<script type="text/javascript">
+
+    function showContent(msg) {
+        if (msg == 'customer') {
+            $("#content").attr("src", "customerManager.html");
+        } else if(msg == 'product') {
+            $("#content").attr("src", "productManager.html");
+        } else if (msg == 'order'){
+            $("#content").attr("src", "orderManager.html");
+        }else if(msg=='pro'){
+            $("#content").attr("src", "product.html");
+        }
+    }
+</script>
+
+<body>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header float-right">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <button type="button" th:text="${userMsg}" onclick="isLogin()">请登录</button>
+                <button type="button" onclick="logout()">注销</button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse float-right" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">语言 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">中文</a>
+                            </li>
+                            <li>
+                                <a href="#">英文</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <!-- 侧边栏 -->
+    <div class="row">
+        <div class="col-md-2 col-sm-2 hidden-xs">
+            <aside>
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active" onclick="showContent('customer')">
+                        <a>客戶管理</a>
+                    </li>
+                    <li role="presentation" class="active" onclick="showContent('product')">
+                        <a>商品管理</a>
+                    </li>
+                    <li role="presentation" class="active" onclick="showContent('order')">
+                        <a>入库管理</a>
+                    </li>
+                    <li role="presentation" class="active" onclick="showContent('pro')">
+                        <a>商品列表</a>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+        <div class="col-md-10 col-sm-10">
+            <iframe id="content" frameborder="0" scrolling="no" src="customerManager.html"></iframe>
+        </div>
+    </div>
+
+</main>
+
+</body>
+
+</html>

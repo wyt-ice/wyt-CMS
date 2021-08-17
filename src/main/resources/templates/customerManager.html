@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<!-- jQuery -->
+<script src="  js/external/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="  css/external/dataTables.bootstrap.css"/>
+<script src="  js/external/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="  js/external/dataTables.bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<!--界面库 bootstrap-->
+<link rel="stylesheet" type="text/css" href="  css/external/bootstrap.min.css"/>
+<script src="  js/external/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="  css/page.css"/>
+<script type="text/javascript">
+    window.onload = getCustomer;
+
+    function getCustomer() {
+        //ajax();
+        //ajax_query();
+        refreshData();
+    }
+</script>
+<body>
+<div>
+    客户ID：<input id="selectId" value=""/>
+    客户姓名：<input id="selectName" value=""/>
+    客户行业：
+    <select id="selectIndustry">
+        <option value="">请选择</option>
+        <option value="1">教育培训</option>
+        <option value="2">电子商务</option>
+        <option value="3">对外贸易</option>
+        <option value="4">酒店旅游</option>
+        <option value="5">房地产</option>
+    </select>
+    客户级别：
+    <select id="selectLevel">
+        <option value="">请选择</option>
+        <option value="6">VIP用户</option>
+        <option value="7">普通用户</option>
+    </select>
+    客户电话：<input id="selectMobile" value=""/>
+    <button type="button" class="btn btn-primary" onclick="refreshData()">查询</button>
+</div>
+
+<div>
+    <button type="button" class="btn btn-primary" onclick="addDataDialog()">新增</button>
+    <button type="button" class="btn btn-primary" onclick="customerDownload()">下载</button>
+</div>
+
+
+
+<table id="customerList" class="table table-striped">
+    <thead>
+    <tr>
+        <th>客户ID</th>
+        <th>客户姓名</th>
+        <th>客户所属行业</th>
+        <th>客户级别</th>
+        <th>客户电话</th>
+        <th>创建时间</th>
+        <th></th>
+    </tr>
+    </thead>
+</table>
+<!-- 新增对话框 -->
+<div class="modal" id="addCustomerDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">新增人员信息</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>客户名称</label>
+                        <input type="text" class="form-control" name="custName" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>客户所属行业</label>
+                        <br>
+                        <select name="custIndustry">
+                            <option value="">请选择</option>
+                            <option value="1">教育培训</option>
+                            <option value="2">电子商务</option>
+                            <option value="3">对外贸易</option>
+                            <option value="4">酒店旅游</option>
+                            <option value="5">房地产</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>客户电话</label>
+                        <input type="text" class="form-control" name="custMobile" placeholder="电话">
+                    </div>
+                    <div class="form-group">
+                        <label>客户级别</label>
+                        <br>
+                        <select name="custLevel">
+                            <option>请选择</option>
+                            <option value="6">VIP客户</option>
+                            <option value="7">普通客户</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>客户创建时间</label>
+                        <input type="text" class="form-control" name="custCreateTime" placeholder="工作"
+                               id="custCreateTime">
+                    </div>
+                    <div class="form-group addDataPlane">
+                        <button class="btn btn-default navbar-right" onclick="addData()">确定</button>
+                        <button class="btn btn-default " data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modifyCustomerDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">修改人员信息</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>客户姓名</label>
+                        <input type="text" class="form-control" name="custName1" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>客户所属行业</label>
+                        <br>
+                        <select name="custIndustry1">
+                            <option value="">请选择</option>
+                            <option value="1">教育培训</option>
+                            <option value="2">电子商务</option>
+                            <option value="3">对外贸易</option>
+                            <option value="4">酒店旅游</option>
+                            <option value="5">房地产</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>客户电话</label>
+                        <input type="text" class="form-control" name="custMobile1" placeholder="电话">
+                    </div>
+                    <div class="form-group">
+                        <label>客户级别</label>
+                        <br>
+                        <select name="custLevel1">
+                            <option>请选择</option>
+                            <option value="6">VIP客户</option>
+                            <option value="7">普通客户</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>客户创建时间</label>
+                        <input type="text" class="form-control" name="custCreateTime1" placeholder="工作"
+                               id="custCreateTime1">
+                    </div>
+                    <div class="form-group addDataPlane">
+                        <button class="btn btn-default navbar-right" onclick="modifyData()">确定</button>
+                        <button class="btn btn-default " data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="editDialog">
+    <!-- modal默认是隐藏的 -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 头部关闭按钮 -->
+            <div class="modal-header">
+                <button type="button" class="close myclose" data-dismiss="modal"><span>&times</span></button>
+                <div class="h3 modal-title">修改内容</div>
+                <!-- 内容部分 -->
+                <div class="modal-body">
+                    <P>这是内容部分</P>
+                </div>
+                <!-- 页脚 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary myclose" data-dismiss="modal">关闭</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 分类删除模态框 -->
+<div class="modal small fade" id="delCustomerDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">删除确认</h3>
+            </div>
+            <div class="modal-body">
+                <h4 style="text-align:center;">
+                    <i class="fa fa-warning modal-fa" style="color:red;"></i> 您确认要删除该客户信息吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="delButton" data-account="" data-complete-text="正在删除...">删除</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </div>
+    </div>
+    　　
+</div>
+</body>
+
+<script type="text/javascript" src="  js/utils.js"></script>
+<script type="text/javascript" src="  js/customer.js"></script>
+<script type="text/javascript" src="  js/download.js"></script>
+<script type="text/javascript" src=" laydate.js"></script>
+<script>
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#custCreateTime',//指定元素
+        type: 'datetime',
+        format: 'yyyy-MM-dd HH:mm:ss',
+
+    });
+</script>
+<script>
+    laydate.render({
+        elem: '#custCreateTime1', //指定元素
+        format: 'yyyy-MM-dd HH:mm:ss',
+    });
+</script>
+</html>
